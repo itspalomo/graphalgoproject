@@ -9,22 +9,14 @@ struct Vertex {
     bool c;                                             // vertex 'color' to indicate if visited
 };
 
-void Dijstra(Vertex G[], bool A[], int W[], int n, int s);
+void Dijstra(Vertex G[], int A[], int n, int s);
 void initialize_source(Vertex G[], int n, int s);
-void relax(Vertex G[], int W[], int n, int u, int v);
+void relax(Vertex G[], int A[], int n, int u, int v);
 
 int main() {
     const int n = 5;
     Vertex G[n];                                        // vertex array
-    bool A[n*n] =                                       // adjacent nxn matrix
-    {
-        0, 1, 1, 0, 0,
-        0, 0, 1, 1, 0,
-        0, 1, 0, 1, 1,
-        0, 0, 0, 0, 1,
-        1, 0, 0, 1, 0
-    };
-    int W[n*n] =                                        // weight nxn matrix
+    int A[n*n] =                                        // adjacency weighted nxn matrix
     {
         0, 10, 5, 0, 0,
         0, 0, 2, 1, 0,
@@ -36,7 +28,7 @@ int main() {
     for (int i = 0; i < n; i++)
         G[i].ID = i;                                    // set vertex id based on array position
 
-    Dijstra(G, A, W, n, 0);
+    Dijstra(G, A, n, 0);
 
     // Verifying results
     cout << "v(d, p)\n";
@@ -78,7 +70,7 @@ int main() {
     return 0;
 }
 
-void Dijstra(Vertex G[], bool A[], int W[], int n, int s) {
+void Dijstra(Vertex G[], int A[], int n, int s) {
     initialize_source(G, n, s);                         // set all but s's depth to 'infinity'
 
     int visits = 0;
@@ -97,7 +89,7 @@ void Dijstra(Vertex G[], bool A[], int W[], int n, int s) {
         int u = min->ID;
         for (int v = 0; v < n; v++) {                   // for each vertex v in G.A[u]
             if (A[u*n+v]) {                             //  if (A[u,v]) ; if v is adjacent to u
-                relax(G, W, n, u, v);                   //      relax u's adjacents
+                relax(G, A, n, u, v);                   //      relax u's adjacents
             }
         }
     }
@@ -110,9 +102,9 @@ void initialize_source(Vertex G[], int n, int s) {
     }
     G[s].d = 0;                                         // s.d = 0
 }
-void relax(Vertex G[], int W[], int n, int u, int v) {
-    if (G[v].d > G[u].d + W[u*n+v]) {                   // if (v.d > u.d + w(u,v))
-        G[v].d = G[u].d + W[u*n+v];                     //  v.d = u.d + w(u,v)
+void relax(Vertex G[], int A[], int n, int u, int v) {
+    if (G[v].d > G[u].d + A[u*n+v]) {                   // if (v.d > u.d + w(u,v))
+        G[v].d = G[u].d + A[u*n+v];                     //  v.d = u.d + w(u,v)
         G[v].p = G[u].ID;                               //  v.p = u
     }
 }
