@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1651465044 source:d:\spring_2022\ece141\graphalgoproject\dijkstrapq\edge_w.cpp
+	"edge_w.h"
+
+1651465027 d:\spring_2022\ece141\graphalgoproject\dijkstrapq\edge_w.h
+	<iostream>
+
+1651464023 source:d:\spring_2022\ece141\graphalgoproject\dijkstrapq\main.cpp
+	<iostream>
+	"dijkstraspq.h"
+	"graph_w.h"
+
+1651465583 d:\spring_2022\ece141\graphalgoproject\dijkstrapq\dijkstraspq.h
+	"graph_w.h"
+	<queue>
+
+1651465581 d:\spring_2022\ece141\graphalgoproject\dijkstrapq\graph_w.h
+	"edge_w.h"
+	<vector>
+	<iostream>
+
+1651464882 source:d:\spring_2022\ece141\graphalgoproject\dijkstrapq\graph_w.cpp
+	"graph_w.h"
+
+1651464977 source:d:\spring_2022\ece141\graphalgoproject\dijkstrapq\dijkstraspq.cpp
+	"dijkstraspq.h"
+
