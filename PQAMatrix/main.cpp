@@ -1,21 +1,32 @@
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include <chrono>
 #include "graph.h"
-//#include "pqueue_v.h"
-//#include "vertex.h"
+#include "tests.h"
+
 
 #define test 0							// set to test algorithm
-#define measure 1						// set to measure algorithm
-#define MAX_V 1000
-#define MAX_E MAX_V*(MAX_V-1)*2
+#define measure 0						// set to measure algorithm
 
-void test_Dijkstra(int V, int E);
 
 
 int main() {
 
+	/*
+		Below will measure a sparse graph from V[100:1000] to get 20 datapoints
+		and the average of 10 runs for the same graph G(V,E).
+			- E = 2*V , for all V
+
+		The same will be done for a dense graph.
+			- E = (V(V-1)) / 2 , for all V
+	*/
+
+	printf("Sparse graph measurements\n");
+	measure_sparse_graph(100, 1000, 20, 10);
+
+	printf("Dense graph measurements\n");
+	measure_dense_graph(100, 1000, 20, 10);
+
+
+	/*
 	std::fstream file;
 	std::stringstream ss, ss_n, ss_pq;
 
@@ -23,19 +34,14 @@ int main() {
 
 	Graph *G;
 	int V(5), E(18);					// change values for different graph size test (assumed valid)
+
+
 	
-#if test
-	test_Dijkstra(V, E);
-#endif
-
-#if measure
-
-	/*
 		Test Parameters:
 		- sparse vs dense graph
 		- constant source vertex
 		- random source vertex
-	*/
+	
 
 	file.open("time_log.txt");
 	file << "V\tE\tt_n\tt_pq\n";
@@ -62,7 +68,7 @@ int main() {
 			file << s_E << "\t";
 
 			for (int i = 0; i < number_of_tests; i++) {
-				//** Measuring Dijkstra Algorithm (naive) **//
+				//-- Measuring Dijkstra Algorithm (naive) --//
 				start = std::chrono::system_clock::now();
 				G->Dijkstra_n(s);
 				end = std::chrono::system_clock::now();
@@ -70,7 +76,7 @@ int main() {
 				auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-start);
 				average_n += double(duration.count());
 
-				//** Measuring Dijkstra Algorithm (pq) **//
+				//-- Measuring Dijkstra Algorithm (pq) --//
 				start = std::chrono::system_clock::now();
 				G->Dijkstra_pq(s);
 				end = std::chrono::system_clock::now();
@@ -104,38 +110,7 @@ int main() {
 	}
 
 	file.close();
-#endif
+*/
 
 	return 0;
 }
-
-#if 1
-void test_Dijkstra(int V, int E) {
-	//*** Testing Dijkstra's Algorithm for both Naive and PQ implementation
-
-	Graph* G = new Graph(V, E);						// generating a small graph to verify correctness
-	printf("Testing the graph: G(V,E)=G(5,15)\n\n");
-	printf("Adjacency Matrix:\n");
-	for (int i = 0; i < 5; i++){
-		for (int j = 0; j < 5; j++){
-			printf("%3i, ", G->weight(i,j));
-		}
-		printf("\n");
-	}
-	printf("\nDijkstra_n with the source s=0\n");
-
-	G->Dijkstra_n(0);								// testing naive implementation
-
-	for (int i = 0; i < 5; i++)
-		printf("v%i(%i, %i)\n", G->ID(i), G->depth(i), G->predecessor(i));
-	printf("\nDijkstra_pq with the source s=0\n");
-
-	G->Dijkstra_pq(0);								// testing pq implementation
-
-	for (int i = 0; i < 5; i++)
-		printf("v%i(%i, %i)\n", G->ID(i), G->depth(i), G->predecessor(i));
-	printf("\n");
-
-	delete[] G;
-}
-#endif
